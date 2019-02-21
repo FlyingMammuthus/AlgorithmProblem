@@ -1,4 +1,3 @@
-#pragma once
 #include <vector>
 #include <queue>                        // priority_queue defined in head file queue
 #include "ListNode.h"
