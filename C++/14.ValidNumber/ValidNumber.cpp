@@ -54,4 +54,68 @@ public:
 		return true;
 	}
 	*/
+	
+		bool isNumber(string s) {
+		int sLen = s.size(), sPre = 0, isDec = -1, isExp = -1, sEnd = sLen - 1;
+		while (sPre < sLen && s[sPre] == ' ') {  // for input like "   1"
+			++sPre;
+		}
+		while (sEnd >= 0 && s[sEnd] == ' ') {
+			--sEnd;
+		}		
+		if (s[sPre] == '+' || s[sPre] == '-') {
+			++sPre;
+		}
+		if (sEnd < sPre || (sEnd == sPre && (s[sPre] < '0' || s[sPre] > '9'))) {   // for input like "    " 
+			return false;
+		}
+		while (sPre <= sEnd) {
+			if (s[sPre] < '0' || s[sPre] > '9') {
+				switch (s[sPre]) {
+				case '.': {
+					if (isDec == -1 && isExp == -1) {
+						isDec = sPre;
+					}
+					else {
+						return false;
+					}
+					break;
+				}
+
+				case 'e': {
+					if (isExp == -1) {
+						isExp = sPre;
+						if (sPre == sEnd || (s[++sPre] < '0' || s[sPre] > '9')) {
+							if (s[sPre] == '+' || s[sPre] == '-') {
+								sPre++;
+								if (s[sPre] < '0' || s[sPre] > '9'){
+									return false;
+								}
+							}
+							else {
+								return false;
+							}
+						}
+					}
+					else {
+						return false;
+					}
+					break;
+				}
+				default:
+					return false;
+				}
+			}
+			++sPre;
+		}
+		if (isExp > -1 && (isExp == 0 || (s[isExp - 1] != '.' && (s[isExp - 1] < '0' || s[isExp - 1] > '9')))) {
+			return false;
+		}
+
+		if (isDec > -1 && (isDec == 0 || s[isDec - 1] < '0' || s[isDec - 1] > '9') && (isDec == sEnd || s[isDec + 1] < '0' || s[isDec + 1] > '9')) {
+			return false;
+		}
+
+		return true;
+	}	
 }
